@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yash</title>
+</head>
+<body>
+    <h1 style="color: aqua; font-style: italic; font-size: 50px;">Booking place for your dinner!</h1>
+    <p>Name: <input type="text" id="name" placeholder="Enter Name" oninput="validateForm()"> </p>
+    <p>Phone: <input type="text" id="phn" placeholder="Enter Phone number" oninput="validateForm()"> </p>
+    
+    <p style="color: red; font-style: italic; font-size: 30px;">Program time:</p>
+    <input type="radio" name="time" value="7:00 am">7:00 am<br><br>
+    <input type="radio" name="time" value="1:00 pm">1:00 pm<br><br>
+    <input type="radio" name="time" value="7:00 pm">7:00 pm<br><br>
+
+    <p style="color: red; font-style: italic; font-size: 30px;">What would you like to have with us?:</p>
+    <input type="checkbox" name="dish" value="Rice">Rice
+    <input type="checkbox" name="dish" value="Pasta">Pasta
+    <input type="checkbox" name="dish" value="Momo">Momo
+    <input type="checkbox" name="dish" value="Biryani">Biryani
+    <br><br>
+
+    <button id="B1" onclick="showresult()" disabled>Submit</button><span id="message"></span><br><br>
+
+    <p id="res" style="color: darkgreen; font-style: italic; font-size: 30px;">Result:</p>
+    <p id="nameErr" style="color:red"></p>
+    <p id="phnErr" style="color:red"></p>
+    <p id="dishErr" style="color:red"></p>
+
+    <script>
+        function validateForm() {
+            let Btn = document.getElementById("B1");
+            let name = document.getElementById("name").value;
+            let nameField = document.getElementById("name");
+            let nameErr = document.getElementById("nameErr");
+            let phn = document.getElementById("phn").value;
+            let phnErr = document.getElementById("phnErr");
+            let phnField = document.getElementById("phn");
+            let message = document.getElementById("message");
+            let namePattern = /^[A-Za-z]+ [A-Za-z]+$/;
+            let isFormValid = true;
+
+            // Validate name
+            if (!namePattern.test(name)) {
+                nameErr.innerHTML = "Please enter a valid first and last name.";
+                nameField.style.backgroundColor = "yellow";
+                isFormValid = false;
+            } else {
+                nameErr.innerHTML = "";
+                nameField.style.backgroundColor = "white";
+            }
+
+            // Validate phone number
+            let phnPattern = /^[0-9][0-9A-Za-z]{5}$/;
+            if (!phnPattern.test(phn)) {
+                phnErr.innerHTML = "Error: Phone number must start with a number and be of 6 digit.";
+                phnField.style.backgroundColor = "red";
+                isFormValid = false;
+            } else {
+                phnErr.innerHTML = "";
+                phnField.style.backgroundColor = "white";
+            }
+
+            // Enable or disable the submit button
+            if (isFormValid) {
+                Btn.disabled = false;
+                message.innerHTML = "";
+            } else {
+                Btn.disabled = true;
+                message.innerHTML = "Please correct the errors above.";
+            }
+        }
+
+        function showresult() {
+            let name = document.getElementById("name").value;
+            let phone = document.getElementById("phn").value;
+            let time = document.querySelector('input[name="time"]:checked');
+            let dishes = document.querySelectorAll('input[name="dish"]:checked');
+            let selectedDishes = Array.from(dishes).map(dish => dish.value);
+
+            let dishErr = document.getElementById("dishErr");
+
+            if (selectedDishes.length == 0) {
+                dishErr.innerHTML = "Please select at least one dish.";
+                return;
+            } else {
+                dishErr.innerHTML = "";
+            }
+            
+
+            document.getElementById("res").innerHTML ="Reservation for: Mr/Mrs " +name + " Phone: " + phone + " at " +time.value + " dishes are: " + selectedDishes. join("_") + ".";
+        }
+    </script>
+
+    <style>
+        body {
+            text-align: center;
+        }
+    </style>
+</body>
+</html>
